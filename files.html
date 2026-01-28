@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlainStereo - Файлы</title>
+    <link rel="stylesheet" href="src/tailwind.css">
+    <style>
+        .file-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+        .file-status.offline {
+            background: #6b7280;
+            color: white;
+        }
+        .file-status.online {
+            background: #10b981;
+            color: white;
+        }
+        #file-dropdown.active {
+            display: block !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-[#5568d3]">PlainStereo</h1>
+                    <div class="relative">
+                        <button id="file-menu-btn" class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            Файлы
+                        </button>
+                        <div id="file-dropdown" class="hidden absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-200">
+                            <a href="#" id="logout-btn" class="block px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">Выход</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span id="user-info" class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <h2 class="text-3xl font-bold text-gray-900">Мои файлы</h2>
+            <div class="flex flex-wrap gap-2">
+                <button id="create-file-btn" class="bg-[#667eea] hover:bg-[#5568d3] text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Создать файл
+                </button>
+                <button id="import-file-btn" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
+                    <svg class="w-5 h-5 transform rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Импорт
+                </button>
+            </div>
+        </div>
+        <!-- <div id="selected-file-actions" class="hidden mb-6 flex flex-wrap gap-2 p-4 bg-neutral-50 rounded-lg border border-neutral-200"> -->
+        <!-- <div id="selected-file-actions" class="hidden fixed top-[10vh] left-1/2 -translate-x-1/2 flex flex-wrap gap-2 p-4 bg-neutral-900 bg-opacity-90 rounded-lg border border-neutral-700">
+            <button id="rename-file-btn" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg transition-colors duration-200">
+                Переименовать
+            </button>
+            <button id="export-file-btn" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg transition-colors duration-200">
+                Экспорт
+            </button>
+            <button id="delete-file-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                Удалить
+            </button>
+        </div> -->
+        <div id="selected-file-actions" class="hidden fixed top-[10vh] left-1/2 -translate-x-1/2 z-50">
+            <div class="relative bg-gray-800/80 backdrop-blur-sm rounded-lg border border-gray-700/30 shadow-xl p-1 w-auto">
+                <div class="flex items-center gap-2">
+                    <button id="rename-file-btn" class="px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-500/50 transition-all text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Переименовать
+                    </button>
+                    <div class="w-px h-6 bg-gray-500"></div>
+                    <button id="export-file-btn" class="px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-500/50 transition-all text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Экспорт
+                    </button>
+                    <div class="w-px h-6 bg-gray-500"></div>
+                    <button id="delete-file-btn" class="px-3 py-2 rounded-md text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all text-sm font-medium flex items-center gap-2">
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Удалить
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="files-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        </div>
+    </div>
+    <div id="modal" class="hidden fixed inset-0 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 relative">
+            <button id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            <h2 id="modal-title" class="text-2xl font-semibold text-gray-800 mb-4"></h2>
+            <div id="modal-body" class="space-y-4"></div>
+        </div>
+    </div>
+    <style>
+        .file-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+        .file-status.offline {
+            background: #6b7280;
+            color: white;
+        }
+        .file-status.online {
+            background: #10b981;
+            color: white;
+        }
+        #file-dropdown.active {
+            display: block;
+        }
+    </style>
+    <script type="module" src="src/files.js"></script>
+</body>
+</html>

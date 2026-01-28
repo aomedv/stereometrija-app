@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlainStereo</title>
+    <link rel="stylesheet" href="src/tailwind.css">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+      #file-menu-dropdown.active { display: block; }
+    </style>
+  </head>
+  <body class="m-0 p-0 overflow-hidden">
+    <div class="bg-[#020b24] text-white/80 px-3 flex items-center justify-between h-[40px]">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center">
+          <h1 class="font-bold text-[#5568d3]">PlainStereo</h1>
+        </div>
+        <div class="relative">
+          <button class="px-2 py-1 hover:bg-white/20 focus:bg-white/20 rounded transition-colors text-xs" id="file-menu-button">Файл</button>
+          <div class="hidden absolute left-0 mt-1 w-40 bg-[#020b24] rounded-lg shadow-lg py-1 z-50" id="file-menu-dropdown">
+            <a href="#" id="save-file-menu" class="block px-4 py-2 text-xs text-gray-100 hover:text-gray-700 hover:bg-gray-100">Сохранить</a>
+            <a href="files.html" id="return-to-files-menu" class="block px-4 py-2 text-xs text-gray-100 hover:text-gray-700 hover:bg-gray-100">Вернуться к файлам</a>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="text-xs" id="file-name-display">Без файла</div>
+        <div id="file-status" class="hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 20 20">
+            <rect x="0" fill="none" width="20" height="20"/>
+            <g fill="white" stroke="white" stroke-width="0.5">
+              <path d="M14.8 9c.1-.3.2-.6.2-1 0-2.2-1.8-4-4-4-1.5 0-2.9.9-3.5 2.2-.3-.1-.7-.2-1-.2C5.1 6 4 7.1 4 8.5c0 .2 0 .4.1.5-1.8.3-3.1 1.7-3.1 3.5C1 14.4 2.6 16 4.5 16h10c1.9 0 3.5-1.6 3.5-3.5 0-1.8-1.4-3.3-3.2-3.5zm-6.3 5.9l-3.2-3.2 1.4-1.4 1.8 1.8 3.8-3.8 1.4 1.4-5.2 5.2z"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="flex h-[calc(100vh-40px)]">
+      <div class="w-[350px] bg-[#020b23] p-3 pt-2 text-white overflow-y-auto border-r border-white/5" id="app-sidebar">
+        <!-- <h2 class="select-figure-title">Выберите фигуру</h2> -->
+        <div class="mb-3">
+          <button id="figure-select-toggle" class="w-full px-2 py-2 bg-white/10 border border-white/20 rounded text-white text-base cursor-pointer hover:bg-white/15 transition-colors">Выберите фигуру</button>
+          <div id="figure-selector" class="relative bg-[#020b23] border border-white/10 rounded py-1 mt-1.5 hidden">
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="cube">
+              <img src="/assets/images/cube.png" alt="Куб" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Куб</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="parallelepiped">
+              <img src="/assets/images/parallelepiped.png" alt="Параллелепипед" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Параллелепипед</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="prism">
+              <img src="/assets/images/prism.png" alt="Призма" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Призма</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="pyramid">
+              <img src="/assets/images/pyramid.png" alt="Пирамида" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Пирамида</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="tetrahedron">
+              <img src="/assets/images/tetrahedron.png" alt="Тетраэдр" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Тетраэдр</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="cylinder">
+              <img src="/assets/images/cylinder.png" alt="Цилиндр" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Цилиндр</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="cone">
+              <img src="/assets/images/cone.png" alt="Конус" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Конус</span>
+            </div>
+            <div class="figure-option flex items-center px-2 py-1.5 cursor-pointer border-b border-white/[0.04] hover:bg-white/5 transition-colors" data-figure="sphere">
+              <img src="/assets/images/sphere.png" alt="Сфера" class="w-[15%] h-[15%] mr-3">
+              <span class="text-base">Сфера</span>
+            </div>
+          </div>
+        </div>
+        <div id="instruction-tool" class="mt-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-base font-semibold">Инструкции</h3>
+            <div class="flex items-center gap-2">
+              <button id="help-instructions-btn" class="bg-white/10 text-white border border-white/20 rounded w-[30px] h-[30px] cursor-pointer hover:bg-white/15 transition-colors" title="Справка">?</button>
+            </div>
+          </div>
+          <div id="instruction-input-container">
+            <textarea id="instruction-input" rows="10" placeholder="Пишите по одной инструкции в строке" class="w-full box-border bg-white/[0.06] text-white border border-white/20 rounded p-2 resize-y"></textarea>
+            <div id="symbol-keyboard" class="mt-1.5 flex flex-wrap gap-1.5">
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="∈" title="Принадлежит">∈</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="⊂" title="Подмножество">⊂</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="∩" title="Пересечение">∩</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="∥" title="Параллельно">∥</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="⟂" title="Перпендикулярно">⟂</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="∠" title="Угол">∠</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="°" title="Градусы">°</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="→" title="Вектор/направление">→</button>
+              <button class="bg-white/10 text-white border border-white/20 rounded w-[29px] h-[29px] text-sm cursor-pointer hover:bg-white/15 transition-colors" data-symbol="]" title="Пусть">]</button>
+            </div>     
+          </div>
+          <div id="instruction-results" class="mt-2 overflow-x-hidden"></div>
+          <div id="answers-output" class="mt-2 overflow-x-hidden"></div>
+        </div>
+        <div id="params">
+          <div id="params-error" class="text-red-400 mb-2"></div>
+        </div>
+      </div>
+      <div class="flex-1 bg-[#111] relative" id="app-three">
+        <div id="section-controls" class="absolute top-[3%] left-1/2 -translate-x-1/2 z-50 hidden">
+          <div class="relative bg-gray-800/80 backdrop-blur-sm rounded-lg border border-gray-700/30 shadow-xl p-1 w-auto">
+            <div class="flex items-center gap-2">
+              <button id="confirm-section" class="px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-500/50 transition-all text-sm font-medium flex items-center gap-2">
+                <svg class="w-6 h-6 text-lime-500 round-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
+                </svg>
+              </button>
+              <div class="w-px h-6 bg-gray-500"></div>
+              <button id="cancel-section" class="px-3 py-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-500/50 transition-all text-sm font-medium flex items-center gap-2">
+                <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                </svg>
+              </button>
+              <div class="w-px h-6 bg-gray-500"></div>
+              <button id="undo-action" class="px-3 py-2 rounded-md text-zinc-100 hover:text-zinc-300 hover:bg-gray-500/50 transition-all text-sm font-medium flex items-center gap-2">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                </svg>
+              </button>
+              <button id="redo-action" class="px-3 py-2 rounded-md text-zinc-100 hover:text-zinc-300 hover:bg-gray-500/50 transition-all text-sm font-medium flex items-center gap-2">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="help-overlay" class="hidden fixed inset-0 bg-black/60 z-[200] items-center justify-center">
+      <div id="help-box" class="help-scroll bg-[#020b23] text-white p-4 rounded-lg border border-white/10 max-w-[900px] w-[95%] text-sm max-h-[82vh] overflow-y-auto">
+        <div class="flex items-center justify-between gap-2">
+          <div class="font-bold text-base">Справочник по инструкциям</div>
+          <button id="help-close" class="bg-transparent border border-white/20 text-white rounded px-2.5 py-1 cursor-pointer hover:bg-white/10 transition-colors">Закрыть</button>
+        </div>
+        <div class="mt-1.5 text-[#cfd9ff]">Вводите по одной инструкции в строке</div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Точки</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">P = (1, 2, 3)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Создаёт точку P с координатами (1,2,3)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Q = (0, -1)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Создаёт точку Q в плоскости OXZ: z по умолчанию = 0</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">K = Центр(A_1B_1C_1D_1ABCD)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Центр текущей фигуры по полному набору её вершин или средней точки указанного набора вершин</div>
+        </div>
+          <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Векторы</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">v = &lt;1, 0, 0&gt;</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">вектор вдоль оси OX</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">w = Вектор(A, B)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Вектор из точки A в точку B</div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Прямые</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">L = Прямая(A, B)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Прямая по двум точкам A и B</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">L2 = AB</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">краткая форма</div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Лучи</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">r = Луч(A, B)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">луч AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">r2 = A→B</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">краткая форма луча</div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Отрезки</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">S = Отрезок(A, B)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Отрезок AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">S2 = [A, B]</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Краткая форма</div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Плоскости</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">α = Плоскость(A, B, C)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Плоскость по трём точкам</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">β = ABC</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">краткая форма</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Сечение(ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Строит сечение текущей фигуры плоскостью ABC. Допустимы формы аргумента: A,B,C или ABC; либо имя ранее определённой плоскости (например, α). Встроенные выражения плоскости не принимаются. Присвоение необязательно: a = Сечение(…)</div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Проекции</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">H = Проекция(P, AB)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Проекция точки P на прямую AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">H = Пр(P, AB)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Короткая форма: Пр — синоним Проекция</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">H2 = Проекция(P, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">проекция точки P на плоскость ABC</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">H2 = Пр(P, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Сокращение для Проекция(P, ABC)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">h = Проекция(B_1D, A_1BC_1)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Проекция прямой B_1D на плоскость A_1BC_1: если прямая ⟂ плоскости, получается точка; иначе — прямая в плоскости</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">h2 = Проекция(С_1A_1, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Поддерживается кириллица в обозначениях: С_1A_1 ≡ C_1A_1</div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Медиана, Биссектриса, Высота</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">m = Медиана(A, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Медиана из вершины A треугольника ABC (синоним: мед)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">b = Биссектриса(B, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Фигура: первый аргумент — вершина, второй — многоугольник (синоним: бис)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">b2 = Биссектриса(B, ∠ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Угол, формы: ∠ABC, Угол(AB, BC), ∠(AB, BC)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">h = Высота(A, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Высота из вершины A на противоположную сторону в треугольнике ABC (синоним: выс)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">h1 = Высота(P, AB)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Перпендикуляр из точки P к прямой AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">h2 = Высота(P, ABC)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Перпендикуляр из точки P к плоскости ABC (если P не вершина треугольника ABC). Синонимы: Перпендикуляр, перпенд, перп</div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Пересечения</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">X = Пересечение(AB, CD)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Точка пересечения прямых AB и CD (если существует)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">L = Пересечение(ABC, Плоскость(P, &lt;0, 1, 0&gt;))</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Линия пересечения двух плоскостей</div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Принадлежность и соотношения</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">N ∈ AB</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Точка N лежит на прямой AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">K ∈ AB ∩ CD</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Точка K принадлежит пересечению прямых AB и CD</div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Параллельность и перпендикулярность</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">AB ∥ CD</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Прямые AB и CD параллельны</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">AB ⟂ CD</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Прямые AB и CD перпендикулярны</div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Деление и середины</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">M = Середина(A, B)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Точка M — середина отрезка AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">M = сер(A, B)</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Синоним для Середина(A,B)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">AN/NB = 2/3</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Деление отрезка AB точкой N во внутреннем отношении 2:3</div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Измерения и запросы</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Длина(A, B) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Длина отрезка AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">|AB| = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">краткяа форма</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Расстояние(P, AB) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Расстояние от точки P до прямой AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Радиус(a) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Радиус окружности a. Aliases: Radius, R</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Диаметр(a) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Диаметр окружности a. Aliases: Diameter, D</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Угол(AB, CD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Угол между прямыми AB и CD</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">∠(AB, CD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Краткая форма</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Образующая = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Для цилиндра — высота; для конуса — длина образующей √(r² + h²)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">УравнениеПлоскости(ABC) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Каноническое уравнение плоскости ABC</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Площадь(A,B,C,...) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Площадь многоугольника, заданного вершинами (порядок важен)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Площадь(A_1B_1C_1D_1ABCD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Площадь поверхности текущего куба (полный набор вершин)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Площадь((ABC),(ACD),...) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Сумма площадей граней оболочки по списку граней</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Периметр(A,B,C,...) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Периметр многоугольника по заданным вершинам</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Периметр(A_1B_1C_1D_1ABCD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Сумма длин всех рёбер текущего куба</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Периметр((ABC),(ACD),...) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Суммируются уникальные рёбра оболочки</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Объем(ABCD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Объём тетраэдра ABCD. Синонимы: Объём, V</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">V(A_1B_1C_1D_1ABCD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Объём куба по всем 8 вершинам (строится выпуклая оболочка)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Объем(SABCD) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Объём пирамиды с вершиной S и основанием ABCD (5 точек)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">V(ABCEFG) = ?</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Объём многогранника, образованного сечениями (любое количество точек ≥ 4)</div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Описанные/вписанные фигуры (планиметрия)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Описать(A, B, C)</div>
+          </div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">Вписать(A, B, C)</div>
+          </div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Описанные/вписанные фигуры (стереометрия)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">ОписатьСтерео(ABCD, Сфера)</div>
+          </div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">ВписатьСтерео(ABCD, Сфера)</div>
+          </div>
+        </div>
+
+        <div class="mt-3 pt-2 border-t border-white/[0.08]">
+          <div class="font-semibold mb-1.5">Построение по фактам (плоскости и прямые)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">] плоскость α ?: M ∈ α; α ⟂ PQ</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Строит плоскость α через точку M, перпендикулярную отрезку PQ (направлению PQ). Порядок фактов не важен. Символы: ∈ — принадлежит, ∥ — параллельно, ⟂ — перпендикулярно, ⊂ — лежит на</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">] плоскость π ?: AB ⊂ π; CD ∥ π</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Плоскость π содержит прямую AB и параллельна направлению CD</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">] прямая h ?: A ∈ h; AB ∥ h</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Строит прямую h через точку A, параллельную направлению AB</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">b = ACB_1
+] плоскость a ?: b∥a; D∈a</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Строит плоскость a через точку D, параллельную плоскости b (заданной как ACB_1)</div>
+          <div class="relative bg-white/[0.06] border border-white/15 rounded-md p-2.5 px-3 mt-2">
+            <button class="copy-example absolute top-1.5 right-1.5 bg-transparent border border-white/25 text-white rounded px-1.5 py-0.5 cursor-pointer hover:bg-white/10 transition-colors" title="Копировать"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path d="M3 16V4C3 2.89543 3.89543 2 5 2H15M9 22H18C19.1046 22 20 21.1046 20 20V8C20 6.89543 19.1046 6 18 6H9C7.89543 6 7 6.89543 7 8V20C7 21.1046 7.89543 22 9 22Z" stroke="#ffffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="example-code whitespace-pre-wrap font-mono text-[13px] leading-[1.3]">] плоскость γ ?: ABC⟂γ; M∈γ</div>
+          </div>
+          <div class="mt-1.5 text-[#9fb3ff]">Строит плоскость γ через M, перпендикулярную плоскости ABC. Плоскости можно задавать переменными или комбинацией точек</div>
+        </div>
+
+        <div class="mt-2.5 text-[#9fb3ff]">Ошибочные строки подсвечиваются, наведите курсор для причины</div>
+      </div>
+    </div>
+
+    <div id="confirm-overlay" class="hidden fixed inset-0 bg-black/50 z-[100] items-center justify-center">
+      <div id="confirm-box" class="bg-[#020b23] text-white p-5 rounded-lg border border-white/10 text-center">
+        <div id="confirm-message" class="mb-2.5">Сообщение</div>
+        <div>
+          <button id="confirm-yes" class="px-2.5 py-1.5 border-none bg-transparent cursor-pointer text-base text-green-500 mr-2 hover:text-green-400 transition-colors">Да</button>
+          <button id="confirm-no" class="px-2.5 py-1.5 border-none bg-transparent cursor-pointer text-base text-red-500 hover:text-red-400 transition-colors">Нет</button>
+        </div>
+      </div>
+    </div>  
+    <script src="src/file-storage.js"></script>
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      const fileStorage = new FileStorage();
+      document.getElementById('file-menu-button').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('file-menu-dropdown').classList.toggle('active');
+      });
+      document.addEventListener('click', () => {
+        document.getElementById('file-menu-dropdown').classList.remove('active');
+      });
+      
+      function getContentToSave() {
+        const v = window.visualizer;
+        return {
+          instructions: document.getElementById('instruction-input').value,
+          figureType: v?.currentFigureType,
+          params: v?.figureParams,
+          sections: v?.sections?.map(s => ({
+            planeDef: s.planeDef?.map(p => ({x: p.x, y: p.y, z: p.z})) || [],
+            points: s.points?.map(p => ({x: p.x, y: p.y, z: p.z})) || [],
+            labels: s.labels || []
+          })) || [],
+          cameraState: v ? {
+            position: {x: v.camera.position.x, y: v.camera.position.y, z: v.camera.position.z},
+            target: {x: v.controls.target.x, y: v.controls.target.y, z: v.controls.target.z}
+          } : null
+        };
+      }
+      
+      document.getElementById('save-file-menu').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const result = await fileStorage.saveCurrentFile(getContentToSave());
+        alert(result.success ? 'Файл сохранен' : 'Ошибка сохранения: ' + result.message);
+      });
+      
+      let saveTimeout = null;
+      let isLoading = false;
+      
+      function autoSave() {
+        if (!localStorage.getItem('currentFileId') || isLoading) return;
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(async () => {
+          const result = await fileStorage.saveCurrentFile(getContentToSave());
+          if (result.success) {
+            const fileStatus = document.getElementById('file-status');
+            fileStatus.classList.remove("hidden");
+            setTimeout(() => { fileStatus.classList.add("hidden") }, 1000);
+          }
+        }, 1000);
+      }
+      
+      async function loadFile() {
+        if (!localStorage.getItem('currentFileId')) {
+          document.getElementById('file-name-display').textContent = 'Без файла';
+          return;
+        }
+        
+        isLoading = true;
+        const result = await fileStorage.loadCurrentFile();
+        
+        if (!result.success || !result.file) {
+          document.getElementById('file-name-display').textContent = fileStorage.getCurrentFileName();
+          isLoading = false;
+          return;
+        }
+        
+        document.getElementById('file-name-display').textContent = result.file.name || 'Файл';
+        const c = result.file.content;
+        
+        if (!c) {
+          isLoading = false;
+          return;
+        }
+        
+        if (c.instructions) {
+          document.getElementById('instruction-input').value = c.instructions;
+        }
+        
+        const v = window.visualizer;
+        if (!v) {
+          isLoading = false;
+          return;
+        }
+        
+        if (c.figureType) {
+          await v.updateFigure(c.figureType);
+          if (c.params) {
+            v.figureParams = c.params;
+            Object.keys(c.params).forEach(key => {
+              const input = document.getElementById(`param-${key}`);
+              if (input) {
+                input.value = c.params[key];
+              }
+            });
+            v.updateParams();
+          }
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        if (c.sections && Array.isArray(c.sections)) {
+          for (const sec of c.sections) {
+            if (sec.planeDef && Array.isArray(sec.planeDef) && sec.points && sec.labels) {
+              const planeDef = sec.planeDef.map(p => new THREE.Vector3(p.x, p.y, p.z));
+              const points = sec.points.map(p => new THREE.Vector3(p.x, p.y, p.z));
+              const labels = sec.labels;
+              
+              const built = v.createSectionMesh(planeDef, false);
+              if (!built) continue;
+              
+              const labelSprites = [];
+              (async () => {
+                for (let i = 0; i < points.length; i++) {
+                  const text = labels[i];
+                  if (!(v.namedPoints && v.namedPoints[text] || v.namedPointLabels && v.namedPointLabels[text])) {
+                    try {
+                      const sprite = await v.createLabel(text);
+                      if (sprite) {
+                        const dir = points[i].clone().normalize();
+                        sprite.position.copy(points[i]).add(dir.multiplyScalar(0.4));
+                        v.scene.add(sprite);
+                        labelSprites.push(sprite);
+                      }
+                    } catch (_) {}
+                  }
+                }
+              })();
+              
+              v.sections.push({
+                mesh: built.mesh,
+                edges: built.edges,
+                points: points,
+                planeDef: planeDef,
+                labels: labels
+              });
+              v.sectionLabelSprites.push(labelSprites);
+            }
+          }
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        if (c.cameraState) {
+          if (c.cameraState.position) {
+            v.camera.position.set(c.cameraState.position.x, c.cameraState.position.y, c.cameraState.position.z);
+          }
+          if (c.cameraState.target) {
+            v.controls.target.set(c.cameraState.target.x, c.cameraState.target.y, c.cameraState.target.z);
+          }
+          v.controls.update();
+        }
+        
+        isLoading = false;
+      }
+      
+      window.addEventListener('load', () => {
+        let attempts = 0;
+        const waitForVisualizer = setInterval(() => {
+          attempts++;
+          const v = window.visualizer;
+          
+          if (attempts > 100) {
+            clearInterval(waitForVisualizer);
+            return;
+          }
+          
+          if (v && v.camera && v.controls) {
+            clearInterval(waitForVisualizer);
+            const origConfirm = v.confirmSection.bind(v);
+            v.confirmSection = function(...args) { 
+              origConfirm(...args);
+              autoSave();
+            };
+            const origUpdate = v.updateParams.bind(v);
+            v.updateParams = function(...args) {
+              origUpdate(...args);
+              autoSave();
+            };
+            loadFile();
+          }
+        }, 50);
+      });
+      
+      document.getElementById('instruction-input').addEventListener('input', autoSave);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "stereometrija-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@tauri-apps/cli": "^2.8.4",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.1.2"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "katex": "^0.16.22",
+    "mathjs": "^15.0.0",
+    "nerdamer": "^1.1.13",
+    "three": "^0.180.0"
+  }
+}
